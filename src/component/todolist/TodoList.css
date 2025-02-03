@@ -1,0 +1,42 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    background:linear-gradient(#FDFCFB,#3f7275);
+    height: 100vh;
+}
+.todo-container{
+    background-color: rgb(45, 116, 116);
+}
+.head{
+    background-color: #b2dad2;
+    box-shadow: 0px 6px 7px rgba(0, 0, 0, 0.651);
+}
+.text{
+    color: rgb(45, 116, 116);
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}
+.input-section input::placeholder{
+   color: rgb(45, 116, 116);
+}
+
+.form-control:focus {
+    border-color: #07362c;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+} 
+.li_items{
+    list-style: none;
+    background-color: #b2dad2;  
+    box-shadow: 0px 4px 7px rgba(0, 0, 0, 0.651);
+  
+}
+.li_items i{
+    cursor: pointer;
+}
+.li_items i:active{
+    color: red;
+}
+
+
