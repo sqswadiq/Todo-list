@@ -3,88 +3,98 @@ import './TodoList.css'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
-
-
 export class TodoList extends Component {
-    state={
-        input:'',
-        items:[]
+    state = {
+        input: '',
+        items: [],
+        editIndex: null // Track which task is being edited
     }
-    handleChange=(event)=>{
+
+    handleChange = (event) => {
         this.setState({
             input: event.target.value
         })
     }
 
-    handleSubmit=(event)=>{
-        event.preventDefault()
-        const {input,items}=this.state
+    handleSubmit = (event) => {
+        event.preventDefault();
+        const { input, items, editIndex } = this.state;
 
         // Prevent adding empty or whitespace-only tasks
         if (input.trim() === '') {
-            toast.warn('Please enter a task!')
+            toast.warn('Please enter a task!');
             return;
         }
 
-        // const allItems = this.state.items
-
-        // allItems.push(input)
-
-        this.setState({
-             // items:allItems
-            items:[...items,input.trim() ],
-            input: '' // Clear input field after adding item
-            
-        })
-        toast.success('Task Addedd')
-
+        if (editIndex !== null) {
+            // If editing, update the specific item
+            const updatedItems = [...items];
+            updatedItems[editIndex] = input.trim();
+            this.setState({
+                items: updatedItems,
+                input: '',
+                editIndex: null // Reset edit state
+            });
+            toast.info('Task Updated!');
+        } else {
+            // Otherwise, add a new task
+            this.setState({
+                items: [...items, input.trim()],
+                input: ''
+            });
+            toast.success('Task Added!');
+        }
     }
-    deleteItem=(key)=>{
-        // const allItems=this.state.items
 
-        // allItems.splice(key,1)
-
+    deleteItem = (index) => {
         this.setState({
-            // items:allItems
-            items:this.state.items.filter((data,index)=>index !== key)
-        })
-        toast.error('Task Deleted!')
+            items: this.state.items.filter((_, i) => i !== index),
+            editIndex: null // Reset edit state if deleting an item
+        });
+        toast.error('Task Deleted!');
     }
+
+    handleEdit = (index) => {
+        this.setState({
+            input: this.state.items[index], // Set input field with selected task
+            editIndex: index // Set index to edit mode
+        });
+    }
+
     render() {
-        const{input,items}=this.state
-        console.log(input,items);
-        
+        const { input, items, editIndex } = this.state;
+
         return (
-            <div className=' mt-5  todo-container w-100 p-3 rounded'>
-                
+            <div className='mt-5 todo-container w-100 p-3 rounded'>
+                <form className='head p-4 rounded' onSubmit={this.handleSubmit}>
+                    <h1 className='text text-center'>Todo List</h1>
+                    <div className='input-section d-flex'>
+                        <input
+                            onChange={this.handleChange}
+                            value={input} type="text"
+                            className='form-control bg-light me-2 text-secondary'
+                            placeholder={editIndex !== null ? 'Edit Your Todo Here..' : 'Type Your Todo Here..'} />
+                        <button type="submit" className='btn btn-secondary text-primary'>
+                            {editIndex !== null ? 'Update' : 'Add'}
+                        </button>
+                    </div>
+                </form>
 
-
-            <form  className='head p-4 rounded'>
-            <h1 className='text text-center'>Todo List</h1>
-                <div className='input-section d-flex '>
-                    <input onChange={this.handleChange} 
-                    value={input}
-                    type="text"
-                     className='form-control bg-light me-2 text-secondary' placeholder='Type Your Todo Here..'/>
-                    <button onClick={this.handleSubmit} className='btn btn-secondary text-primary'>Add</button>
-                </div>
-            </form>
-
-            <ul className='w-100 mt-2 p-0'>
-                {
-                items.map((data,index)=>(
-                    <li key={index} className='li_items d-flex justify-content-between align-items-center p-3 mb-2 rounded'>{data}
-                <i onClick={()=>this.deleteItem(index)} class="fa-solid fa-trash"></i>
-                </li>
-                ))
-                }
-                
-            </ul>
-            <ToastContainer />
+                <ul className='w-100 mt-2 p-0'>
+                    {items.map((data, index) => (
+                        <li key={index} className='li_items d-flex justify-content-between align-items-center p-3 mb-2 rounded'>
+                            {data}
+                            <div>
+                                <i onClick={() => this.handleEdit(index)} className="fa-regular fa-pen-to-square text-secondary me-2"></i>
+                                <i onClick={() => this.deleteItem(index)} className="fa-solid fa-trash"></i>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+                <ToastContainer />
             </div>
-        )
+        );
     }
 }
 
-export default TodoList
+export default TodoList;
