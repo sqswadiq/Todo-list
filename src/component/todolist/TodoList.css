@@ -35,8 +35,14 @@ body{
 .li_items i{
     cursor: pointer;
 }
-.li_items i:active{
+.li_items .fa-trash:active{
     color: red;
+}
+.li_items .fa-pen-to-square{
+    color: rgb(82, 88, 84);
+}
+.li_items .fa-pen-to-square:active{
+    color: rgb(7, 168, 55);
 }
 
 

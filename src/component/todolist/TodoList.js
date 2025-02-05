@@ -85,7 +85,7 @@ export class TodoList extends Component {
                         <li key={index} className='li_items d-flex justify-content-between align-items-center p-3 mb-2 rounded'>
                             {data}
                             <div>
-                                <i onClick={() => this.handleEdit(index)} className="fa-regular fa-pen-to-square text-secondary me-2"></i>
+                                <i onClick={() => this.handleEdit(index)} className="fa-regular fa-pen-to-square  me-2"></i>
                                 <i onClick={() => this.deleteItem(index)} className="fa-solid fa-trash"></i>
                             </div>
                         </li>
